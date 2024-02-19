@@ -1,0 +1,6 @@
+name: transformer_from_scratch
+channels:
+  - defaults
+dependencies:
+  - pip:
+      - pre-commit==3.5.0

@@ -11,3 +11,6 @@ class LinearLayer(Layer):
         self.shape = shape
         self.weights = np.random.rand(*self.shape)
 
+    def forward(self, inputs: np.array) -> np.array:
+
+        return np.matmul(inputs, self.weights)

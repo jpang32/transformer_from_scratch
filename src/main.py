@@ -3,7 +3,7 @@ import pytest
 from src.linear_layer import LinearLayer
 from src.softmax import Softmax
 
-def test_backprop():
+def main():
     # Add linear layer with shape to process vocab of input
     # layer1 = LinearLayer(shape=())
     # layer2 = Sigmoid(LinearLayer(shape=()))
@@ -22,9 +22,18 @@ def test_backprop():
     vocab_indices = dict(zip(vocab, range(len(vocab))))
 
     window_size = 3
-    hidden_dimensions = 3
-    layer1 = LinearLayer(shape=(len(vocab), hidden_dimensions))
-    layer2 = Softmax(LinearLayer(shape=(hidden_dimensions, len(vocab) * 2 * window_size)))
+    hidden_dimensions = 300
+
+    layer1 = np.array((1000, hidden_dimensions))
+    layer2 = np.array((hidden_dimensions, 1000))
+
+    # Pick random samples
+    # Calculate output
+    # Backprop only those random samples
+
+
+    # layer1 = LinearLayer(shape=(len(vocab), hidden_dimensions))
+    # layer2 = Softmax(LinearLayer(shape=(hidden_dimensions, len(vocab) * 2 * window_size)))
     for word in input_sentence_list:
         one_hot_encoded_word = np.zeros(len(vocab), dtype=int)
         one_hot_encoded_word[vocab_indices[word]] = 1
@@ -33,3 +42,6 @@ def test_backprop():
         out = layer2.forward(out)
 
         print(out)
+
+
+if __name__ == "__main__":

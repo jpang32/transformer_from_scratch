@@ -1,7 +1,10 @@
+import json
+
 import numpy as np
 import pytest
 from src.linear_layer import LinearLayer
 from src.softmax import Softmax
+
 
 def main():
     # Add linear layer with shape to process vocab of input
@@ -18,30 +21,32 @@ def main():
     input_sentence = "This is a test sentence for a test function in a test suite"
     input_sentence_list = input_sentence.lower().split()
 
-    vocab = set(input_sentence_list)
-    vocab_indices = dict(zip(vocab, range(len(vocab))))
+    with open("../vocab.json") as vocab_file:
+        vocab = json.load(vocab_file)
+
+    reverse_vocab = {v: k for k, v in vocab.items()}
+
+    len_vocab = len(vocab)
 
     window_size = 3
     hidden_dimensions = 300
 
-    layer1 = np.array((1000, hidden_dimensions))
-    layer2 = np.array((hidden_dimensions, 1000))
+    hidden_layer = np.random.rand(len(vocab), hidden_dimensions)
+    output_layers = [np.random.rand(hidden_dimensions, len_vocab) for i in range(window_size * 2)]
 
-    # Pick random samples
-    # Calculate output
-    # Backprop only those random samples
+    # Load vocabulary
+    print(output_layers)
 
-
-    # layer1 = LinearLayer(shape=(len(vocab), hidden_dimensions))
-    # layer2 = Softmax(LinearLayer(shape=(hidden_dimensions, len(vocab) * 2 * window_size)))
+    # Translate vocab index into one-hot-encoded vector
+    # Run vector through layers to get output
     for word in input_sentence_list:
-        one_hot_encoded_word = np.zeros(len(vocab), dtype=int)
-        one_hot_encoded_word[vocab_indices[word]] = 1
+        word_embedding = hidden_layer[vocab[word], :]
+        out = [word_embedding.dot(layer) for layer in output_layers]
 
-        out = layer1.forward(one_hot_encoded_word)
-        out = layer2.forward(out)
+        out_words = [reverse_vocab[np.argmax(out_vec)] for out_vec in out]
 
-        print(out)
+    print(out_words)
 
 
 if __name__ == "__main__":
+    main()

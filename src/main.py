@@ -2,8 +2,10 @@ import json
 
 import numpy as np
 import pytest
-from src.linear_layer import LinearLayer
-from src.softmax import Softmax
+
+
+def softmax(vector: np.array):
+    return np.exp(vector) / np.sum(np.exp(vector))
 
 
 def main():
@@ -41,7 +43,7 @@ def main():
     # Run vector through layers to get output
     for word in input_sentence_list:
         word_embedding = hidden_layer[vocab[word], :]
-        out = [word_embedding.dot(layer) for layer in output_layers]
+        out = [softmax(word_embedding.dot(layer)) for layer in output_layers]
 
         out_words = [reverse_vocab[np.argmax(out_vec)] for out_vec in out]
 
